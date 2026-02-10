@@ -1,0 +1,67 @@
+# 日志文件
+*.log
+
+# 编辑器配置文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 系统文件
+Thumbs.db
+.DS_Store
+
+# 临时文件
+*.tmp
+*.temp
+
+# 构建产物
+/build/
+/dist/
+
+# 依赖管理
+/node_modules/
+/bower_components/
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 测试
+/coverage/
+
+# 包管理
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# 操作系统
+Windows/System32/
+Linux/
+MacOS/
+
+# IDE
+.vscode/
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# 其他
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
