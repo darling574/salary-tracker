@@ -32,7 +32,9 @@ const i18n = {
         
         // 货币符号
         currency: '¥',
-        currencySymbol: '¥'
+        currencySymbol: '¥',
+        // 访问统计
+        visitors: '访问人数'
     },
     
     // 英文
@@ -67,7 +69,9 @@ const i18n = {
         
         // 货币符号
         currency: '$',
-        currencySymbol: '$'
+        currencySymbol: '$',
+        // 访问统计
+        visitors: 'Visitors'
     },
     
     // 日语
@@ -102,7 +106,9 @@ const i18n = {
         
         // 货币符号
         currency: '¥',
-        currencySymbol: '¥'
+        currencySymbol: '¥',
+        // 访问统计
+        visitors: '訪問者数'
     },
     
     // 韩语
@@ -137,7 +143,9 @@ const i18n = {
         
         // 货币符号
         currency: '₩',
-        currencySymbol: '₩'
+        currencySymbol: '₩',
+        // 访问统计
+        visitors: '방문자 수'
     }
 };
 

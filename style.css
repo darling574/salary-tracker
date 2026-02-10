@@ -510,6 +510,56 @@ body {
     color: #ffd700;
 }
 
+/* ===== 访问统计 ===== */
+.visitor-counter {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, rgba(30, 30, 40, 0.9), rgba(20, 20, 30, 0.95));
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 16px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        0 0 50px rgba(255, 215, 0, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    animation: slideInRight 0.5s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.counter-label {
+    color: rgba(255, 215, 0, 0.8);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.counter-value {
+    color: #ffd700;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #ffd700, #ffaa00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    min-width: 40px;
+    text-align: right;
+}
+
 /* ===== 响应式设计 ===== */
 @media (max-width: 600px) {
     .container {

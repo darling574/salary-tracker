@@ -16,6 +16,7 @@ class SalaryTracker {
         this.bindEvents();
         this.initAudio();
         this.initI18n();
+        this.initVisitorCounter();
     }
     
     initElements() {
@@ -68,6 +69,84 @@ class SalaryTracker {
     initI18n() {
         // 初始化国际化
         this.translate();
+    }
+    
+    initVisitorCounter() {
+        // 初始化访问统计
+        this.visitorCountElement = document.getElementById('visitorCount');
+        this.updateVisitorCount();
+    }
+    
+    async updateVisitorCount() {
+        try {
+            // 尝试使用 CountAPI
+            await this.updateVisitorCountWithAPI();
+        } catch (error) {
+            console.log('CountAPI 失败，使用本地存储:', error);
+            // API 失败时使用本地存储
+            this.updateVisitorCountWithLocalStorage();
+        }
+    }
+    
+    async updateVisitorCountWithAPI() {
+        const key = 'salary-tracker-darling574';
+        const apiUrl = `https://api.countapi.xyz`;
+        
+        // 增加访问计数
+        await fetch(`${apiUrl}/hit/${key}`);
+        
+        // 获取当前计数
+        const response = await fetch(`${apiUrl}/get/${key}`);
+        const data = await response.json();
+        
+        if (data.value !== undefined) {
+            this.displayVisitorCount(data.value);
+        }
+    }
+    
+    updateVisitorCountWithLocalStorage() {
+        // 使用本地存储来统计访问量
+        const storageKey = 'salary-tracker-visitors';
+        
+        // 获取当前计数
+        let count = parseInt(localStorage.getItem(storageKey)) || 0;
+        
+        // 增加计数
+        count += 1;
+        
+        // 保存到本地存储
+        localStorage.setItem(storageKey, count.toString());
+        
+        // 显示计数
+        this.displayVisitorCount(count);
+    }
+    
+    displayVisitorCount(count) {
+        if (this.visitorCountElement) {
+            // 添加数字增长动画
+            this.animateNumber(0, count, 1000);
+        }
+    }
+    
+    animateNumber(start, end, duration) {
+        const element = this.visitorCountElement;
+        const startTime = performance.now();
+        
+        const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const current = Math.floor(start + (end - start) * progress);
+            
+            if (element) {
+                element.textContent = current.toLocaleString();
+            }
+            
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        };
+        
+        requestAnimationFrame(animate);
     }
     
     changeLanguage(lang) {
