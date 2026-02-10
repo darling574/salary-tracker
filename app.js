@@ -77,44 +77,45 @@ class SalaryTracker {
         this.updateVisitorCount();
     }
     
-    async updateVisitorCount() {
-        try {
-            // 尝试使用 CountAPI
-            await this.updateVisitorCountWithAPI();
-        } catch (error) {
-            console.log('CountAPI 失败，使用本地存储:', error);
-            // API 失败时使用本地存储
-            this.updateVisitorCountWithLocalStorage();
-        }
-    }
-    
-    async updateVisitorCountWithAPI() {
-        const key = 'salary-tracker-darling574';
-        const apiUrl = `https://api.countapi.xyz`;
-        
-        // 增加访问计数
-        await fetch(`${apiUrl}/hit/${key}`);
-        
-        // 获取当前计数
-        const response = await fetch(`${apiUrl}/get/${key}`);
-        const data = await response.json();
-        
-        if (data.value !== undefined) {
-            this.displayVisitorCount(data.value);
-        }
+    updateVisitorCount() {
+        // 完全使用本地存储，不依赖任何外部 API
+        this.updateVisitorCountWithLocalStorage();
     }
     
     updateVisitorCountWithLocalStorage() {
-        // 使用本地存储来统计访问量
+        // 使用增强的本地存储方案
         const storageKey = 'salary-tracker-visitors';
+        const visitedKey = 'salary-tracker-visited';
+        
+        // 检查用户是否已经访问过
+        const hasVisited = localStorage.getItem(visitedKey);
         
         // 获取当前计数
-        let count = parseInt(localStorage.getItem(storageKey)) || 0;
+        let count = parseInt(localStorage.getItem(storageKey)) || 100; // 初始值设为 100
         
-        // 增加计数
-        count += 1;
+        // 只有新用户才增加计数
+        if (!hasVisited) {
+            count += 1;
+            // 标记用户已访问
+            localStorage.setItem(visitedKey, 'true');
+            // 设置过期时间（30天）
+            const expiryDate = new Date();
+            expiryDate.setDate(expiryDate.getDate() + 30);
+            localStorage.setItem('salary-tracker-expiry', expiryDate.getTime().toString());
+        } else {
+            // 检查是否过期
+            const expiry = parseInt(localStorage.getItem('salary-tracker-expiry')) || 0;
+            const now = new Date().getTime();
+            if (now > expiry) {
+                count += 1;
+                // 更新过期时间
+                const expiryDate = new Date();
+                expiryDate.setDate(expiryDate.getDate() + 30);
+                localStorage.setItem('salary-tracker-expiry', expiryDate.getTime().toString());
+            }
+        }
         
-        // 保存到本地存储
+        // 保存计数
         localStorage.setItem(storageKey, count.toString());
         
         // 显示计数
