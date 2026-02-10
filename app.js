@@ -16,7 +16,6 @@ class SalaryTracker {
         this.bindEvents();
         this.initAudio();
         this.initI18n();
-        this.initVisitorCounter();
     }
     
     initElements() {
@@ -69,85 +68,6 @@ class SalaryTracker {
     initI18n() {
         // 初始化国际化
         this.translate();
-    }
-    
-    initVisitorCounter() {
-        // 初始化访问统计
-        this.visitorCountElement = document.getElementById('visitorCount');
-        this.updateVisitorCount();
-    }
-    
-    updateVisitorCount() {
-        // 完全使用本地存储，不依赖任何外部 API
-        this.updateVisitorCountWithLocalStorage();
-    }
-    
-    updateVisitorCountWithLocalStorage() {
-        // 使用增强的本地存储方案
-        const storageKey = 'salary-tracker-visitors';
-        const visitedKey = 'salary-tracker-visited';
-        
-        // 检查用户是否已经访问过
-        const hasVisited = localStorage.getItem(visitedKey);
-        
-        // 获取当前计数
-        let count = parseInt(localStorage.getItem(storageKey)) || 100; // 初始值设为 100
-        
-        // 只有新用户才增加计数
-        if (!hasVisited) {
-            count += 1;
-            // 标记用户已访问
-            localStorage.setItem(visitedKey, 'true');
-            // 设置过期时间（30天）
-            const expiryDate = new Date();
-            expiryDate.setDate(expiryDate.getDate() + 30);
-            localStorage.setItem('salary-tracker-expiry', expiryDate.getTime().toString());
-        } else {
-            // 检查是否过期
-            const expiry = parseInt(localStorage.getItem('salary-tracker-expiry')) || 0;
-            const now = new Date().getTime();
-            if (now > expiry) {
-                count += 1;
-                // 更新过期时间
-                const expiryDate = new Date();
-                expiryDate.setDate(expiryDate.getDate() + 30);
-                localStorage.setItem('salary-tracker-expiry', expiryDate.getTime().toString());
-            }
-        }
-        
-        // 保存计数
-        localStorage.setItem(storageKey, count.toString());
-        
-        // 显示计数
-        this.displayVisitorCount(count);
-    }
-    
-    displayVisitorCount(count) {
-        if (this.visitorCountElement) {
-            // 添加数字增长动画
-            this.animateNumber(0, count, 1000);
-        }
-    }
-    
-    animateNumber(start, end, duration) {
-        const element = this.visitorCountElement;
-        const startTime = performance.now();
-        
-        const animate = (currentTime) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const current = Math.floor(start + (end - start) * progress);
-            
-            if (element) {
-                element.textContent = current.toLocaleString();
-            }
-            
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            }
-        };
-        
-        requestAnimationFrame(animate);
     }
     
     changeLanguage(lang) {
